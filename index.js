@@ -6,23 +6,24 @@ const cors = require('cors')
 const { dbConnection } = require('./database/config');
 
 //crear el servidor de express
-const app= express();
+const app = express();
 
 //Configurar CORS
-app.use(cors())
+app.use(cors());
+
+//Lectura  y parseo del body
+app.use(express.json());
 
 // BASE DE DATOS
 dbConnection();
 
-//rutas
-app.get( '/',(req, res)=>{
-    res.json({
-        ok: true,
-        msg: 'Hola mundo'
-    })
-} );
+//Rutas
+app.use('/api/usuarios', require('./routes/usuarios'));
+app.use('/api/login', require('./routes/auth'));
 
 
-app.listen( process.env.PORT, () =>{
+
+
+app.listen(process.env.PORT, () => {
     console.log('servidor corriendo en puerto ' + process.env.PORT);
-} )
+})
